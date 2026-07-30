@@ -223,7 +223,7 @@ function App() {
 
     try {
       const response = await fetch(
-        'http://localhost:3001/analyze',
+        '/api/analyze',
         {
           method: 'POST',
           headers: {
