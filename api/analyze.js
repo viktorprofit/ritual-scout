@@ -262,4 +262,4 @@ ${marketContext}
   }
 })
   
-  export default appФ
+  export default app
