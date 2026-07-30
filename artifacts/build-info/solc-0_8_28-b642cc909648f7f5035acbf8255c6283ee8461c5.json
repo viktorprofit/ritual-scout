@@ -1,0 +1,42 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-b642cc909648f7f5035acbf8255c6283ee8461c5",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "compilerType": "solc",
+  "userSourceNameMap": {
+    "contracts/ReportRegistry.sol": "project/contracts/ReportRegistry.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode.linkReferences",
+            "evm.bytecode.object",
+            "evm.bytecode.opcodes",
+            "evm.bytecode.sourceMap",
+            "evm.deployedBytecode.immutableReferences",
+            "evm.deployedBytecode.linkReferences",
+            "evm.deployedBytecode.object",
+            "evm.deployedBytecode.opcodes",
+            "evm.deployedBytecode.sourceMap",
+            "evm.methodIdentifiers"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/ReportRegistry.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.24;\r\n\r\ncontract ReportRegistry {\r\n\r\n    uint256 public reportCount;\r\n\r\n    struct Report {\r\n        uint256 id;\r\n        address author;\r\n        string project;\r\n        uint256 score;\r\n        string model;\r\n        string reportHash;\r\n        string ipfsCid;\r\n        uint256 createdAt;\r\n    }\r\n\r\n    mapping(uint256 => Report) public reports;\r\n\r\n    mapping(address => uint256[]) public reportsByUser;\r\n\r\n    event ReportSaved(\r\n        uint256 indexed id,\r\n        address indexed author,\r\n        string project,\r\n        uint256 score\r\n    );\r\n\r\n    function saveReport(\r\n        string calldata project,\r\n        uint256 score,\r\n        string calldata model,\r\n        string calldata reportHash,\r\n        string calldata ipfsCid\r\n    ) external {\r\n\r\n        reportCount++;\r\n\r\n        reports[reportCount] = Report({\r\n            id: reportCount,\r\n            author: msg.sender,\r\n            project: project,\r\n            score: score,\r\n            model: model,\r\n            reportHash: reportHash,\r\n            ipfsCid: ipfsCid,\r\n            createdAt: block.timestamp\r\n        });\r\n\r\n        reportsByUser[msg.sender].push(reportCount);\r\n\r\n        emit ReportSaved(\r\n            reportCount,\r\n            msg.sender,\r\n            project,\r\n            score\r\n        );\r\n    }\r\n\r\n    function getUserReports(\r\n        address user\r\n    ) external view returns (uint256[] memory) {\r\n\r\n        return reportsByUser[user];\r\n    }\r\n\r\n    function getReport(\r\n        uint256 id\r\n    ) external view returns (Report memory) {\r\n\r\n        return reports[id];\r\n    }\r\n\r\n}"
+      }
+    }
+  }
+}
